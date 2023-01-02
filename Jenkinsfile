@@ -1,16 +1,13 @@
 pipeline {
- 
   agent any
- 
   stages {
+		stage('Maven Compile'){
  
-stage('Maven Compile'){
+			steps{
  
-steps{
+				echo 'Project compile stage'
  
-echo 'Project compile stage'
- 
-bat label: 'Compilation running', script: '''mvn compile'''
+				bat label: 'Compilation running', script: '''mvn compile'''
  
       }
  
@@ -19,52 +16,49 @@ bat label: 'Compilation running', script: '''mvn compile'''
  
 stage('Unit Test') {
  
-  steps {
+  		steps {
  
-echo 'Project Testing stage'
+			echo 'Project Testing stage'
  
-bat label: 'Test running', script: '''mvn test'''
- 
-       
- 
+			bat label: 'Test running', script: '''mvn test'''
        }
  
    }
-   stage('Jacoco Coverage Report') {
+
+stage('Jacoco Coverage Report') {
  
         steps{
- 
             jacoco()
  
-}
+			 }
  
-}
+ }
  
 stage('SonarQube'){
  
-steps{
+			steps{
  
-bat label: '', script: '''mvn sonar:sonar \
+				bat label: '', script: '''mvn sonar:sonar \
  
--Dsonar.host.url=http://localhost:9000 \
+				-Dsonar.host.url=http://localhost:9000 \
  
--Dsonar.login=squ_f7f469bb4b1e6f44f1a291724cbe9cdf247d2408'''
+				-Dsonar.login=squ_f7f469bb4b1e6f44f1a291724cbe9cdf247d2408'''
  
-}
+			}
  
-}
+	}
  
 stage('Maven Package'){
  
-steps{
+					steps{
  
-echo 'Project packaging stage'
+						echo 'Project packaging stage'
  
-bat label: 'Project packaging', script: '''mvn package'''
+						bat label: 'Project packaging', script: '''mvn package'''
  
-}
+						 }
  
-}
+		}
 }
  
 post {
